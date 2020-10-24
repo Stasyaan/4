@@ -39,9 +39,6 @@ class flat :public blockOfFlats {
 public:
 	~flat(){};
 	flat(int _sqare, int _residents, int _w, int _d, int _h) :blockOfFlats(_residents, _w, _d, _h) {
-		w = _w;
-		d = _d;
-		h = _h;
 		sqare = _sqare;
 	}
 	void printFlat() {
@@ -68,9 +65,6 @@ class  block :public semiDetached {
 public:
 	~block() {}
 	block(int _windows, std::string _adress, int _w, int _d, int _h) :semiDetached(_adress, _w, _d, _h) {
-		w = _w;
-		d = _d;
-		h = _h;
 		windows = _windows;
 	}
 	void printBlock() {
@@ -83,8 +77,8 @@ protected:
 class room : public block, public flat {
 public:
 	~room(){}
-	room(int _sqare, int _residents, int _windows, std::string _adress, int _w, int _d, int _h):block(_windows, _adress, _w, _d, _h), flat(_sqare, _residents, _w, _d, _h) {
-	
+	room(std::string _roomName, int _sqare, int _residents, int _windows, std::string _adress, int _w, int _d, int _h):block(_windows, _adress, _w, _d, _h), flat(_sqare, _residents, _w, _d, _h),house(_w, _d, _h) {
+		roomName = _roomName;
 	}
 	void printRoom() {
 		std::cout << "Room name: " << roomName << "\n";
@@ -95,7 +89,12 @@ private:
 
 int main() {
 	int S,R,W,w,d,h;
-	std::string A;
+	std::string A, N;
+
+	std::cout << "Room name: ";
+	rewind(stdin);
+	std::getline(std::cin, A);
+
 	std::cout << "Sqare: ";
 	std::cin >> S;
 	if (!std::cin){std::cout << "bad"; return 0;}
@@ -119,15 +118,15 @@ int main() {
 	std::cout << "Height: ";
 	std::cin >> h;
 	if (!std::cin) { std::cout << "bad"; return 0; }
-
-	std::cout << "Street name: ";
+	
+	std::cout << "Address: ";
 	rewind(stdin);
 	std::getline(std::cin, A);
-	if (!std::regex_search(A, std::regex("[a-zA-Z] [0-9]/[0-9]"))) {
+	if (!std::regex_search(A, std::regex("([a-zA-Z] ){1,5}[0-90]{1,3}/[0-9]{1,3}"))) {
 		std::cout << "bad"; return 0;
 	}
 
-	room a1409(S, R, W, A, w, d, h);
+	room a1409(N, S, R, W, A, w, d, h);
 	
 	a1409.printHouse();
 	a1409.printSemiDetached();
